@@ -1,3 +1,5 @@
+import { ThunkDispatchType } from '../containers/CounterContainer'
+
 export type CounterActionType = { type: typeof INCREASE } | { type: typeof DECREASE }
 export type CounterStateType = {
   number: number
@@ -14,6 +16,19 @@ export const increase = (): CounterActionType => ({
 export const decrease = (): CounterActionType => ({
   type: DECREASE,
 })
+
+export const increaseAsync = () => (dispatch: ThunkDispatchType) => {
+  setTimeout(() => {
+    console.log(typeof dispatch, dispatch)
+    dispatch(increase())
+  }, 1000)
+}
+
+export const decreaseAsync = () => (dispatch: ThunkDispatchType) => {
+  setTimeout(() => {
+    dispatch(decrease())
+  }, 1000)
+}
 
 const initialState = {
   number: 0,

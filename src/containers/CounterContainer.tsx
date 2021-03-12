@@ -1,7 +1,11 @@
-import React, { Dispatch } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Counter from '../components/Counter'
-import { CounterStateType, CounterActionType, increase, decrease } from '../modules/counter'
+import { CounterStateType, increaseAsync, decrease } from '../modules/counter'
+import { ThunkDispatch } from 'redux-thunk'
+import { AnyAction } from 'redux'
+
+export type ThunkDispatchType = ThunkDispatch<CounterStateType, any, AnyAction>
 
 interface IRootStateType {
   counter: CounterStateType
@@ -9,9 +13,9 @@ interface IRootStateType {
 
 function CounterContainer() {
   const number = useSelector((state: IRootStateType) => state.counter.number)
-  const dispatch = useDispatch<Dispatch<CounterActionType>>()
+  const dispatch: ThunkDispatchType = useDispatch()
 
-  const onIncrease = () => dispatch(increase())
+  const onIncrease = () => dispatch(increaseAsync())
   const onDecrease = () => dispatch(decrease())
 
   return <Counter number={number} onIncrease={onIncrease} onDecrease={onDecrease} />
