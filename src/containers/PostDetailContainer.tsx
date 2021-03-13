@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import PostDetail from '../components/PostDetail'
-import { getPost, PostsStateType } from '../modules/posts'
+import { clearPost, getPost, PostsStateType } from '../modules/posts'
 import { PostThunkDispatchType } from './PostContainer'
 
 interface IRootStateType {
@@ -18,6 +18,10 @@ function PostDetailContainer() {
 
   useEffect(() => {
     dispatch(getPost(postId))
+    return () => {
+      console.log('unmount')
+      dispatch(clearPost())
+    }
   }, [dispatch, postId])
 
   if (isLoading) return <div>Loading..</div>

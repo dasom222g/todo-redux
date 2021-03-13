@@ -22,7 +22,7 @@ function PostContainer() {
     dispatch(getPosts())
   }, [dispatch])
 
-  if (isLoading) return <div>Loading..</div>
+  if (isLoading && !posts) return <div>Loading..</div>
   if (error) return <div>Error..</div>
   if (!posts) return null
 

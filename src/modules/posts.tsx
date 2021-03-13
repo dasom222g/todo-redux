@@ -9,6 +9,7 @@ export const GET_POSTS_ERROR = 'GET_POSTS_ERROR'
 export const GET_POST = 'GET_POST'
 export const GET_POST_SUCCESS = 'GET_POST_SUCCESS'
 export const GET_POST_ERROR = 'GET_POST_ERROR'
+export const CLEAR_POST = 'CLEAR_POST'
 
 export type PostsActionType =
   | { type: typeof GET_POSTS }
@@ -17,6 +18,7 @@ export type PostsActionType =
   | { type: typeof GET_POST }
   | { type: typeof GET_POST_SUCCESS; payload: postsAPI.PostDataType }
   | { type: typeof GET_POST_ERROR; payload: object; error: boolean }
+  | { type: typeof CLEAR_POST }
 
 type StateObjectType<T> = {
   isLoading: boolean
@@ -77,9 +79,12 @@ export const getPost = (id: number) => async (dispatch: PostThunkDispatchType) =
 export const getPosts = createPromiseThunk(GET_POSTS, postsAPI.getPosts)
 export const getPost = createPromiseThunk(GET_POST, postsAPI.getPost)
 
+// action 생성 함수
+export const clearPost = () => ({ type: CLEAR_POST })
+
 // reducer
 
-const getPostsReducer = handleAsyncActions(GET_POSTS, 'posts') // reducer함수를 리턴
+const getPostsReducer = handleAsyncActions(GET_POSTS, 'posts', true) // reducer함수를 리턴
 const getPostReducer = handleAsyncActions(GET_POST, 'post')
 
 const inintialState = {
@@ -97,8 +102,12 @@ export default function posts(state: PostsStateType = inintialState, action: Pos
     case GET_POST:
     case GET_POST_SUCCESS:
     case GET_POST_ERROR:
-      // 위 세가지 경우일때 아래 reducer함수를 실행시켜 변경된 state값을 리턴함
       return getPostReducer(state, action)
+    case CLEAR_POST:
+      return {
+        ...state,
+        post: postsReducerUtils.initial(),
+      }
     default:
       return state
   }
