@@ -74,8 +74,8 @@ export const getPost = (id: number) => async (dispatch: PostThunkDispatchType) =
 }
 */
 
-const getPosts = createPromiseThunk(GET_POSTS, postsAPI.getPosts)
-const getPost = createPromiseThunk(GET_POST, postsAPI.getPost)
+export const getPosts = createPromiseThunk(GET_POSTS, postsAPI.getPosts)
+export const getPost = createPromiseThunk(GET_POST, postsAPI.getPost)
 
 // reducer
 

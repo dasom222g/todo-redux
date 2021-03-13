@@ -1,5 +1,5 @@
 import { PostDataType } from '../api/posts'
-import { PostThunkDispatchType } from '../containers/PostsContainer'
+import { PostThunkDispatchType } from '../containers/PostContainer'
 import {
   GET_POSTS,
   GET_POST,
@@ -12,20 +12,20 @@ import {
 } from '../modules/posts'
 
 // 중복되는 코드를 간단히 해주기 위한 thunk 생성함수
-type PostsPromiseType = () => Promise<PostDataType[]>
-type PostPromiseType = (id: number) => Promise<PostDataType | Error>
+// type PostsPromiseType = () => Promise<PostDataType[]>
+// type PostPromiseType = (id: number) => Promise<PostDataType | Error>
 
-export const createPromiseThunk = (
+export const createPromiseThunk = <T extends Function>(
   type: typeof GET_POSTS | typeof GET_POST,
-  promiseCreator: PostsPromiseType | PostPromiseType,
+  promiseCreator: T,
 ) => {
-  const [SUCCESS, ERROR] = [`${type}__SUCCESS`, `${type}__ERROR`]
+  const [SUCCESS, ERROR] = [`${type}_SUCCESS`, `${type}_ERROR`]
 
   // thunk 생성 부분
-  const thunkCreate = <T extends number>(param: T) => async (dispatch: PostThunkDispatchType) => {
+  const thunkCreate = <T extends number>(param?: T) => async (dispatch: PostThunkDispatchType) => {
     dispatch({ type })
     try {
-      const payload = await promiseCreator(param)
+      const payload = param ? await promiseCreator(param) : await promiseCreator()
       dispatch({
         type: SUCCESS,
         payload,
@@ -43,7 +43,7 @@ export const createPromiseThunk = (
 
 // 중복되는 코드를 간단히 해주기 위한 reducer
 export const handleAsyncActions = (type: typeof GET_POSTS | typeof GET_POST, key: string) => {
-  const [SUCCESS, ERROR] = [`${type}__SUCCESS`, `${type}__ERROR`]
+  const [SUCCESS, ERROR] = [`${type}_SUCCESS`, `${type}_ERROR`]
   const reducer = (state: PostsStateType, action: PostsActionType) => {
     switch (action.type) {
       case type:

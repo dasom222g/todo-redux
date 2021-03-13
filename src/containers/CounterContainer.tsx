@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Counter from '../components/Counter'
-import { CounterStateType, increaseAsync, decrease } from '../modules/counter'
+import { CounterStateType, increaseAsync, decreaseAsync } from '../modules/counter'
 import { ThunkDispatch } from 'redux-thunk'
 import { AnyAction } from 'redux'
 
@@ -16,7 +16,7 @@ function CounterContainer() {
   const dispatch: ThunkDispatchType = useDispatch()
 
   const onIncrease = () => dispatch(increaseAsync())
-  const onDecrease = () => dispatch(decrease())
+  const onDecrease = () => dispatch(decreaseAsync())
 
   return <Counter number={number} onIncrease={onIncrease} onDecrease={onDecrease} />
 }

@@ -30,7 +30,7 @@ export const getPosts = async () => {
 }
 
 export const getPost = async (id: number) => {
-  sleep(500)
+  await sleep(500)
   const data = posts.find((item) => item.id === id)
   return data ? data : new Error() // 객체로 리턴
 }
