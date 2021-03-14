@@ -83,14 +83,13 @@ export const handleAsyncActions = (
 }
 
 // state의 중복되는 코드를 간단히 해주기 위한 객체 메소드
-
 export const postsReducerUtils = {
   initial: () => ({
     isLoading: false,
     data: null,
     error: null,
   }),
-  loading: (data: PostDataType | PostDataType[] | null = null) => ({
+  loading: (data: PostDataType | {} | PostDataType[] | null = null) => ({
     isLoading: true,
     data,
     error: null,

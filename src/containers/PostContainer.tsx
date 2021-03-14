@@ -4,9 +4,9 @@ import { AnyAction } from 'redux'
 import { PostDataType } from '../api/posts'
 import PostList from '../components/PostList'
 import { useDispatch, useSelector } from 'react-redux'
-import { PostsStateType, getPosts } from '../modules/posts'
+import { PostsStateType, getPosts, PostsActionType } from '../modules/posts'
 
-export type PostThunkDispatchType = ThunkDispatch<PostDataType, any, AnyAction>
+export type PostThunkDispatchType = ThunkDispatch<PostDataType, PostsActionType, AnyAction>
 
 interface IRootStateType {
   posts: PostsStateType
