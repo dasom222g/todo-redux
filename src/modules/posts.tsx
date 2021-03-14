@@ -1,6 +1,11 @@
 import * as postsAPI from '../api/posts'
-import { PostThunkDispatchType } from '../containers/PostContainer'
-import { postsReducerUtils, createPromiseThunk, handleAsyncActions } from '../lib/asyncUtils'
+import {
+  postsReducerUtils,
+  createPromiseThunk,
+  handleAsyncActions,
+  createPromiseThunkById,
+  handleAsyncActionsById,
+} from '../lib/asyncUtils'
 
 //action 타입 정의
 
@@ -41,7 +46,7 @@ export type PostsStateType = {
 
 // thunk 생성 함수
 /*
-export const getPosts = () => async (dispatch: PostThunkDispatchType) => {
+export const getPosts = () => async (dispatch: ) => {
   // 요청이 시작됨
   dispatch({ type: GET_POSTS })
   // api 호출
@@ -62,7 +67,7 @@ export const getPosts = () => async (dispatch: PostThunkDispatchType) => {
   }
 }
 
-export const getPost = (id: number) => async (dispatch: PostThunkDispatchType) => {
+export const getPost = (id: number) => async (dispatch: ) => {
   // 요청이 시작됨
   dispatch({ type: GET_POST })
   // api 호출
@@ -84,18 +89,10 @@ export const getPost = (id: number) => async (dispatch: PostThunkDispatchType) =
 }
 */
 
-export const getPosts = createPromiseThunk(GET_POSTS, postsAPI.getPosts)
+export const getPosts = createPromiseThunk(GET_POSTS, postsAPI.getPosts) // thunk함수가 리턴됨
 // export const getPost = createPromiseThunk(GET_POST, postsAPI.getPost)
 // byId타입으로 수정
-export const getPost = (id: number) => async (dispatch: PostThunkDispatchType) => {
-  dispatch({ type: GET_POST, meta: id.toString() })
-  try {
-    const payload = await postsAPI.getPost(id)
-    dispatch({ type: GET_POST_SUCCESS, payload, meta: id.toString() })
-  } catch (e) {
-    dispatch({ type: GET_POST_ERROR, payload: e, error: true, meta: id.toString() })
-  }
-}
+export const getPost = createPromiseThunkById(GET_POST, postsAPI.getPost)
 
 // action 생성 함수
 export const clearPost = () => ({ type: CLEAR_POST })
@@ -106,38 +103,7 @@ const getPostsReducer = handleAsyncActions(GET_POSTS, 'posts', true) // reducer�
 // const getPostReducer = handleAsyncActions(GET_POST, 'post') // reducer함수를 리턴
 
 // byId 타입으로 수정
-const getPostReducer = (state: PostsStateType, action: PostActionType) => {
-  const id = action.meta
-  switch (action.type) {
-    case GET_POST:
-      return {
-        ...state,
-        post: {
-          ...state.post,
-          [id]: postsReducerUtils.loading(state.post[id] ? state.post[id].data : null),
-        },
-      }
-    case GET_POST_SUCCESS:
-      return {
-        ...state,
-        post: {
-          ...state.post,
-          [id]: postsReducerUtils.success(action.payload),
-        },
-      }
-    case GET_POST_ERROR: {
-      return {
-        ...state,
-        post: {
-          ...state.post,
-          [id]: postsReducerUtils.error(action.payload),
-        },
-      }
-    }
-    default:
-      return state
-  }
-}
+const getPostReducer = handleAsyncActionsById(GET_POST, 'post', true)
 
 const inintialState = {
   posts: postsReducerUtils.initial(),

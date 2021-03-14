@@ -9,6 +9,7 @@ import {
   GET_POST_ERROR,
   PostsStateType,
   PostsActionType,
+  PostActionType,
 } from '../modules/posts'
 
 // 중복되는 코드를 간단히 해주기 위한 thunk 생성함수
@@ -45,6 +46,23 @@ export const createPromiseThunk = <T extends Function>(
   return thunkCreate
 }
 
+export const createPromiseThunkById = <T extends Function>(
+  type: typeof GET_POST,
+  promiseCreator: T,
+) => {
+  const [SUCCESS, ERROR] = [`${type}_SUCCESS`, `${type}_ERROR`]
+  const thunkCreate = (id: number) => async (dispatch: PostThunkDispatchType) => {
+    dispatch({ type, meta: id.toString() })
+    try {
+      const payload = await promiseCreator(id)
+      dispatch({ type: SUCCESS, payload, meta: id.toString() })
+    } catch (e) {
+      dispatch({ type: ERROR, payload: e, error: true, meta: id.toString() })
+    }
+  }
+  return thunkCreate
+}
+
 // 중복되는 코드를 간단히 해주기 위한 reducer
 export const handleAsyncActions = (
   type: typeof GET_POSTS | typeof GET_POST,
@@ -71,10 +89,49 @@ export const handleAsyncActions = (
         return {
           ...state,
           [key]:
-            action.type === GET_POSTS_ERROR || action.type === GET_POST_ERROR
-              ? postsReducerUtils.error(action.payload)
-              : null,
+            (action.type === GET_POSTS_ERROR || action.type === GET_POST_ERROR) &&
+            postsReducerUtils.error(action.payload),
         }
+      default:
+        return state
+    }
+  }
+  return reducer
+}
+
+export const handleAsyncActionsById = (type: typeof GET_POST, key: 'post', keepData: boolean) => {
+  const [SUCCESS, ERROR] = [`${type}_SUCCESS`, `${type}_ERROR`]
+  const reducer = (state: PostsStateType, action: PostActionType) => {
+    console.log('action.meta', action.meta)
+    const id = action.meta
+    switch (action.type) {
+      case type:
+        return {
+          ...state,
+          [key]: {
+            ...state[key],
+            [id]: postsReducerUtils.loading(
+              keepData ? state[key][id] && state[key][id].data : null,
+            ),
+          },
+        }
+      case SUCCESS:
+        return {
+          ...state,
+          [key]: {
+            ...state[key],
+            [id]: action.type === GET_POST_SUCCESS && postsReducerUtils.success(action.payload),
+          },
+        }
+      case ERROR: {
+        return {
+          ...state,
+          [key]: {
+            ...state[key],
+            [id]: action.type === GET_POST_ERROR && postsReducerUtils.error(action.payload),
+          },
+        }
+      }
       default:
         return state
     }
