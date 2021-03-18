@@ -7,7 +7,7 @@ type PostDetailProps = {
 function PostDetail({ post }: PostDetailProps): JSX.Element {
   return (
     <>
-      <h1>{!Array.isArray(post) ? post.title : ''}</h1>
+      <h1>{post.title}</h1>
       <p>{!Array.isArray(post) ? post.body : ''}</p>
     </>
   )
