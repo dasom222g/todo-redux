@@ -10,12 +10,12 @@ interface IRootStateType {
   posts: PostsStateType
 }
 
-function PostDetailContainer() {
+function PostDetailContainer(): JSX.Element | null {
   const id = useParams<{ id: string }>().id
   const postId = Number(id)
 
   const { isLoading, data, error } = useSelector(
-    (state: IRootStateType) => state.posts.post[id] || postsReducerUtils.initial(),
+    (state: IRootStateType) => state.posts.post[id] || postsReducerUtils.initial()
   )
   const dispatch: PostThunkDispatchType = useDispatch()
 

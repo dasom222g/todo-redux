@@ -3,17 +3,19 @@ import { Link } from 'react-router-dom'
 import { PostDataType } from '../api/posts'
 
 type PostListProps = {
-  posts: PostDataType[]
+  posts: PostDataType[] | PostDataType
 }
 
-function PostList({ posts }: PostListProps) {
+function PostList({ posts }: PostListProps): JSX.Element {
   return (
     <ul>
-      {posts.map((post) => (
-        <li key={post.id}>
-          <Link to={`/${post.id}`}>{post.title}</Link>
-        </li>
-      ))}
+      {Array.isArray(posts)
+        ? posts.map((post) => (
+            <li key={post.id}>
+              <Link to={`/${post.id}`}>{post.title}</Link>
+            </li>
+          ))
+        : ''}
     </ul>
   )
 }

@@ -4,7 +4,7 @@ export type PostDataType = {
   body: string
 }
 
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+const sleep = (ms: number): Promise<unknown> => new Promise((resolve) => setTimeout(resolve, ms))
 
 const posts: PostDataType[] = [
   {
@@ -24,12 +24,12 @@ const posts: PostDataType[] = [
   },
 ]
 
-export const getPosts = async () => {
+export const getPosts = async (): Promise<PostDataType[]> => {
   await sleep(500)
   return posts
 }
 
-export const getPost = async (id: number) => {
+export const getPost = async (id: number): Promise<PostDataType | Error> => {
   await sleep(500)
   const data = posts.find((item) => item.id === id)
   return data ? data : new Error() // 객체로 리턴

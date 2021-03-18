@@ -6,15 +6,15 @@ import PostList from '../components/PostList'
 import { useDispatch, useSelector } from 'react-redux'
 import { PostsStateType, getPosts, PostsActionType } from '../modules/posts'
 
-export type PostThunkDispatchType = ThunkDispatch<PostDataType, PostsActionType, AnyAction>
+export type PostThunkDispatchType = ThunkDispatch<PostDataType, PostsActionType<unknown>, AnyAction>
 
 interface IRootStateType {
   posts: PostsStateType
 }
 
-function PostContainer() {
+function PostContainer(): JSX.Element | null {
   const { isLoading, data: posts, error } = useSelector(
-    (state: IRootStateType) => state.posts.posts,
+    (state: IRootStateType) => state.posts.posts
   )
   const dispatch = useDispatch<PostThunkDispatchType>()
 
