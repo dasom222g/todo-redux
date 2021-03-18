@@ -4,7 +4,7 @@ import PostContainer from '../containers/PostContainer'
 import { Route } from 'react-router-dom'
 import PostDetailContainer from '../containers/PostDetailContainer'
 
-function App() {
+function App(): JSX.Element {
   return (
     <div className="App">
       {/* <CounterContainer /> */}

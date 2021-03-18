@@ -6,7 +6,7 @@ type CounterProps = {
   onDecrease: () => void
 }
 
-function Counter({ number, onIncrease, onDecrease }: CounterProps) {
+function Counter({ number, onIncrease, onDecrease }: CounterProps): JSX.Element {
   return (
     <div>
       <h1>{number}</h1>

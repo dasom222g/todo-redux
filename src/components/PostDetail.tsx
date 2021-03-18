@@ -4,7 +4,7 @@ type PostDetailProps = {
   post: PostDataType
 }
 
-function PostDetail({ post }: PostDetailProps) {
+function PostDetail({ post }: PostDetailProps): JSX.Element {
   return (
     <>
       <h1>{post.title}</h1>
