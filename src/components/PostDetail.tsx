@@ -8,7 +8,7 @@ function PostDetail({ post }: PostDetailProps): JSX.Element {
   return (
     <>
       <h1>{!Array.isArray(post) ? post.title : ''}</h1>
-      <p>{post.body}</p>
+      <p>{!Array.isArray(post) ? post.body : ''}</p>
     </>
   )
 }
