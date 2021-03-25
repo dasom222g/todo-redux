@@ -32,7 +32,7 @@ export const postTodo = (title: string) => async (
     dispatch({ type: ADD_TODO_SUCCESS, payload: result })
   } catch (error) {
     dispatch({ type: ADD_TODO_ERROR, error })
-    console.error(error)
+    // console.error(error)
   }
 }
 
@@ -45,7 +45,7 @@ export const fetchTodos = () => async (dispatch: Dispatch<ActionType>): Promise<
     dispatch({ type: GET_TODOS_SUCCESS, payload: result })
   } catch (error) {
     dispatch({ type: GET_TODOS_ERROR, error })
-    console.error(error)
+    // console.error(error)
   }
 }
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { ThunkDispatch } from 'redux-thunk'
 import { AnyAction } from 'redux'
 import { PostDataType } from '../api/posts'
@@ -14,7 +14,7 @@ interface IRootStateType {
 
 function PostContainer(): JSX.Element | null {
   const { isLoading, data: posts, error } = useSelector(
-    (state: IRootStateType) => state.posts.posts
+    (state: IRootStateType) => state.posts.posts,
   )
   const dispatch = useDispatch<PostThunkDispatchType>()
 
