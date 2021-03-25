@@ -14,7 +14,7 @@ function TodoItem({ todo }: TodoItemProps): JSX.Element {
   }
 
   const handleClick = (): void => {
-    console.log('test')
+    console.log('delete~~~')
   }
   return (
     <li className="todo__item" key={todo.id}>
