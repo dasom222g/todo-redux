@@ -12,6 +12,10 @@ function TodoItem({ todo }: TodoItemProps): JSX.Element {
   const handleChange = (): void => {
     console.log('event 올릴껍니다')
   }
+
+  const handleClick = (): void => {
+    console.log('delete~~~')
+  }
   return (
     <li className="todo__item" key={todo.id}>
       <div className={todo.isComplete ? 'todo__content complete' : 'todo__content'}>
@@ -29,7 +33,7 @@ function TodoItem({ todo }: TodoItemProps): JSX.Element {
         </div>
         <div className="todo__item-buttonarea">
           <button type="button" className="todo__item-button">
-            <RiCloseCircleLine className="todo__item-button-icon delete" />
+            <RiCloseCircleLine className="todo__item-button-icon delete" onClick={handleClick} />
           </button>
         </div>
       </div>
