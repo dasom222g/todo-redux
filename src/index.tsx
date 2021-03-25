@@ -3,11 +3,13 @@ import ReactDOM from 'react-dom'
 import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
-import { rootReducer } from './modules'
-import { logger } from 'redux-logger'
+// import { logger } from 'redux-logger'
 import ReduxThunk from 'redux-thunk'
 import App from './components/App'
 import { BrowserRouter } from 'react-router-dom'
+import rootReducer from './reducers'
+import './assets/style/pages.scss'
+import './assets/style/todo.scss'
 
 if (process.env.NODE_ENV === 'development') {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -15,7 +17,7 @@ if (process.env.NODE_ENV === 'development') {
   worker.start()
 }
 
-const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(ReduxThunk, logger)))
+const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(ReduxThunk)))
 
 ReactDOM.render(
   <React.StrictMode>
@@ -25,5 +27,5 @@ ReactDOM.render(
       </Provider>
     </BrowserRouter>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById('root'),
 )

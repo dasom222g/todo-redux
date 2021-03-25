@@ -35,6 +35,7 @@ module.exports = {
         }],
         // '@typescript-eslint/no-unused-vars': ['error'],
         '@typescript-eslint/no-unused-vars': 1,
+        '@typescript-eslint/ban-types': 0,
         '@typescript-eslint/explicit-function-return-type': [
           'warn',
           {

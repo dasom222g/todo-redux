@@ -5,8 +5,6 @@ import TodoUpdate from '../containers/TodoUpdate'
 // import PostContainer from '../containers/PostContainer'
 // import PostDetailContainer from '../containers/PostDetailContainer'
 // import CounterContainer from '../containers/CounterContainer'
-import '../assets/style/pages.scss'
-import '../assets/style/todo.scss'
 
 function App(): JSX.Element {
   return (

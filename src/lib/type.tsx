@@ -1,3 +1,5 @@
+import { ThunkDispatch } from 'redux-thunk'
+import { AnyAction } from 'redux'
 import {
   GET_TODOS,
   GET_TODOS_SUCCESS,
@@ -27,7 +29,7 @@ export type TodoDataIDType = {
 }
 
 export type ByIdType = {
-  [key: string]: TodoDataType
+  [key: string]: TodoDataIDType
 }
 
 export type NormalType = {
@@ -35,14 +37,14 @@ export type NormalType = {
   byId: ByIdType
 }
 export type ActionType =
-  | { type: typeof ADD_TODO_SUCCESS; payload: TodoDataType }
+  | { type: typeof ADD_TODO_SUCCESS; payload: TodoDataIDType }
   | { type: typeof ADD_TODO_ERROR; error: Error }
   | { type: typeof DELETE_TODO_SUCCESS; id: string }
   | { type: typeof DELETE_TODO_ERROR; error: Error }
   | { type: typeof UPDATE_TODO_SUCCESS; payload: TodoDataIDType }
   | { type: typeof UPDATE_TODO_ERROR; error: Error }
   | { type: typeof GET_TODOS }
-  | { type: typeof GET_TODOS_SUCCESS; payload: TodoDataIDType[] }
+  | { type: typeof GET_TODOS_SUCCESS; payload: TodoDataIDType[] | null }
   | { type: typeof GET_TODOS_ERROR; error: Error }
   | { type: typeof GET_TODO }
   | { type: typeof GET_TODO_SUCCESS; payload: TodoDataIDType }
@@ -53,3 +55,9 @@ export type StateType = {
   payload: NormalType | null
   error: Error | null
 }
+
+export interface IRootState {
+  todos: StateType
+}
+
+export type ThunkDispatchType = ThunkDispatch<StateType, ActionType, AnyAction>

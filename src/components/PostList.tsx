@@ -11,10 +11,10 @@ function PostList({ posts }: PostListProps): JSX.Element {
     <ul>
       {Array.isArray(posts)
         ? posts.map((post) => (
-            <li key={post.id}>
-              <Link to={`/${post.id}`}>{post.title}</Link>
-            </li>
-          ))
+          <li key={post.id}>
+            <Link to={`/${post.id}`}>{post.title}</Link>
+          </li>
+        ))
         : ''}
     </ul>
   )
