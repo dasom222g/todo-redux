@@ -49,10 +49,28 @@ export const fetchTodos = () => async (dispatch: Dispatch<ActionType>): Promise<
   }
 }
 
-// export const deleteTodo = (id: string) => async(dispatch: Dispatch<ActionType>): Promise<void> => {
-//   try {
+export const putTodo = (id: string, changeItem: TodoDataIDType) => async (
+  dispatch: Dispatch<ActionType>,
+): Promise<void> => {
+  try {
+    const response = await fetch(`/api/todos/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(changeItem),
+    })
+    const result: TodoDataIDType = await response.json()
+    dispatch({ type: UPDATE_TODO_SUCCESS, payload: result, id })
+  } catch (error) {
+    dispatch({ type: UPDATE_TODO_ERROR, error })
+    console.error(error)
+  }
+}
 
-//   } catch(error) {
-
-//   }
-// }
+export const deleteTodo = (id: string) => async (dispatch: Dispatch<ActionType>): Promise<void> => {
+  try {
+    await fetch(`/api/todos/${id}`, { method: 'DELETE' })
+    dispatch({ type: DELETE_TODO_SUCCESS, id })
+  } catch (error) {
+    dispatch({ type: DELETE_TODO_ERROR, error })
+    console.error(error)
+  }
+}

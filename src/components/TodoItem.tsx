@@ -6,16 +6,21 @@ import { RiCloseCircleLine } from 'react-icons/ri'
 
 type TodoItemProps = {
   todo: TodoDataIDType
+  removeTodo: (id: string) => void
+  completeTodo: (id: string, changeItem: TodoDataIDType) => void
 }
 
-function TodoItem({ todo }: TodoItemProps): JSX.Element {
+function TodoItem({ todo, removeTodo, completeTodo }: TodoItemProps): JSX.Element {
   const handleChange = (): void => {
-    console.log('event 올릴껍니다')
+    const id = todo.id.toString()
+    const changeItem = {
+      ...todo,
+      isComplete: !todo.isComplete,
+    }
+    console.log('changeItem', changeItem)
+    completeTodo(id, changeItem)
   }
 
-  const handleClick = (): void => {
-    console.log('delete~~~')
-  }
   return (
     <li className="todo__item" key={todo.id}>
       <div className={todo.isComplete ? 'todo__content complete' : 'todo__content'}>
@@ -33,7 +38,10 @@ function TodoItem({ todo }: TodoItemProps): JSX.Element {
         </div>
         <div className="todo__item-buttonarea">
           <button type="button" className="todo__item-button">
-            <RiCloseCircleLine className="todo__item-button-icon delete" onClick={handleClick} />
+            <RiCloseCircleLine
+              className="todo__item-button-icon delete"
+              onClick={() => removeTodo(todo.id.toString())}
+            />
           </button>
         </div>
       </div>

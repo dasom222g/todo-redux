@@ -8,12 +8,10 @@ import {
   // GET_TODO,
   // GET_TODO_SUCCESS,
   // GET_TODO_ERROR,
-  // ADD_TODO_SUCCESS,
-  // ADD_TODO_ERROR,
-  // DELETE_TODO_SUCCESS,
-  // DELETE_TODO_ERROR,
-  // UPDATE_TODO_SUCCESS,
-  // UPDATE_TODO_ERROR,
+  DELETE_TODO_SUCCESS,
+  DELETE_TODO_ERROR,
+  UPDATE_TODO_SUCCESS,
+  UPDATE_TODO_ERROR,
 } from '../actions/index'
 import produce from 'immer'
 
@@ -21,6 +19,11 @@ const initialState: StateType = {
   isLoading: false,
   payload: null,
   error: null,
+}
+
+const dataInitial: NormalType = {
+  allIds: [],
+  byId: {},
 }
 
 const getData = (payload: TodoDataIDType[] | null): NormalType | null => {
@@ -34,7 +37,7 @@ const getData = (payload: TodoDataIDType[] | null): NormalType | null => {
       allIds,
       byId,
     }
-  } else return null
+  } else return dataInitial
 }
 
 const addTodo = (payload: NormalType, newItem: TodoDataIDType): NormalType => {
@@ -48,6 +51,26 @@ const addTodo = (payload: NormalType, newItem: TodoDataIDType): NormalType => {
       [id]: newItem,
     },
   }
+}
+
+const updateTodo = (payload: NormalType, changeItem: TodoDataIDType, id: string): NormalType => {
+  const byId = produce(payload.byId, (draft) => {
+    draft[id] = changeItem
+  })
+  return {
+    ...payload,
+    byId,
+  }
+}
+
+const removeTodo = (payload: NormalType, id: string): NormalType => {
+  const result = produce(payload, (draft) => {
+    const allIds = payload.allIds.filter((itemId) => itemId !== id)
+    draft.allIds = allIds
+    delete draft.byId[id]
+  })
+  console.log('result', result)
+  return result
 }
 
 export const todos = (state: StateType = initialState, action: ActionType): StateType => {
@@ -64,18 +87,32 @@ export const todos = (state: StateType = initialState, action: ActionType): Stat
         draft.payload = getData(action.payload)
         draft.error = null
       })
-    case ADD_TODO_ERROR:
-    case GET_TODOS_ERROR:
-      return produce(state, (draft) => {
-        draft.isLoading = false
-        draft.payload = null
-        draft.error = action.error
-      })
     case ADD_TODO_SUCCESS:
       return produce(state, (draft) => {
         draft.isLoading = false
         draft.payload = state.payload && addTodo(state.payload, action.payload)
         draft.error = null
+      })
+    case DELETE_TODO_SUCCESS:
+      return produce(state, (draft) => {
+        draft.isLoading = false
+        draft.payload = state.payload && removeTodo(state.payload, action.id)
+        draft.error = null
+      })
+    case UPDATE_TODO_SUCCESS:
+      return produce(state, (draft) => {
+        draft.isLoading = false
+        draft.payload = state.payload && updateTodo(state.payload, action.payload, action.id)
+        draft.error = null
+      })
+    case GET_TODOS_ERROR:
+    case ADD_TODO_ERROR:
+    case UPDATE_TODO_ERROR:
+    case DELETE_TODO_ERROR:
+      return produce(state, (draft) => {
+        draft.isLoading = false
+        draft.payload = null
+        draft.error = action.error
       })
     default:
       return state

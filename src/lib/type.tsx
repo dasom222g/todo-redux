@@ -41,7 +41,7 @@ export type ActionType =
   | { type: typeof ADD_TODO_ERROR; error: Error }
   | { type: typeof DELETE_TODO_SUCCESS; id: string }
   | { type: typeof DELETE_TODO_ERROR; error: Error }
-  | { type: typeof UPDATE_TODO_SUCCESS; payload: TodoDataIDType }
+  | { type: typeof UPDATE_TODO_SUCCESS; payload: TodoDataIDType; id: string }
   | { type: typeof UPDATE_TODO_ERROR; error: Error }
   | { type: typeof GET_TODOS }
   | { type: typeof GET_TODOS_SUCCESS; payload: TodoDataIDType[] | null }
