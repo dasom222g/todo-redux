@@ -2,7 +2,8 @@ import React from 'react'
 import { TodoDataIDType } from '../lib/type'
 import { GoCheck } from 'react-icons/go'
 import { RiCloseCircleLine } from 'react-icons/ri'
-// import { TiEdit } from 'react-icons/ti'
+import { Link } from 'react-router-dom'
+import { TiEdit } from 'react-icons/ti'
 
 type TodoItemProps = {
   todo: TodoDataIDType
@@ -37,6 +38,9 @@ function TodoItem({ todo, removeTodo, completeTodo }: TodoItemProps): JSX.Elemen
           </label>
         </div>
         <div className="todo__item-buttonarea">
+          <Link to={`update/${todo.id}`}>
+            <TiEdit />
+          </Link>
           <button type="button" className="todo__item-button">
             <RiCloseCircleLine
               className="todo__item-button-icon delete"
