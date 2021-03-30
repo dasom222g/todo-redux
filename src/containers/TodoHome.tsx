@@ -5,7 +5,7 @@ import TodoForm from '../components/TodoForm'
 import TodoList from '../components/TodoList'
 import { IRootState, ThunkDispatchType, TodoDataIDType } from '../lib/type'
 
-export default function TodoHome(): JSX.Element | null {
+export default function TodoHome(): JSX.Element {
   const { isLoading, payload: todos, error } = useSelector((state: IRootState) => state.todos)
   const dispatch: ThunkDispatchType = useDispatch()
 
@@ -29,7 +29,7 @@ export default function TodoHome(): JSX.Element | null {
 
   if (isLoading) return <div>Loading..</div>
   if (error) return <div>Error..</div>
-  if (!todos) return null
+  if (!todos) return <></>
 
   return (
     <div className="todo">
