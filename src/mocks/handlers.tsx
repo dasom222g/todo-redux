@@ -15,10 +15,8 @@ export const handlers = [
     const store = localStorage.getItem(KEY)
     const id = Number(req.params.itemId)
     const target = store && JSON.parse(store).find((item: TodoDataIDType) => item.id === id)
-
     if (store && !target) return res(ctx.status(404), ctx.body('Not found'))
-    if (store) return res(ctx.status(200), ctx.json(JSON.parse(store)))
-    else return res(ctx.status(200), ctx.json(null))
+    else return res(ctx.status(200), ctx.json(target))
   }),
   rest.post('/api/todos', (req, res, ctx) => {
     if (typeof req.body !== 'string') return res(ctx.status(422), ctx.body('Error, not string'))

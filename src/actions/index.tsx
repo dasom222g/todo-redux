@@ -1,5 +1,5 @@
 import { Dispatch } from 'react'
-import { header } from '../lib/todoUtils'
+import { header, sleep } from '../lib/todoUtils'
 import { ActionType, TodoDataIDType } from '../lib/type'
 
 export const GET_TODOS = 'GET_TODOS'
@@ -45,6 +45,19 @@ export const fetchTodos = () => async (dispatch: Dispatch<ActionType>): Promise<
     dispatch({ type: GET_TODOS_SUCCESS, payload: result })
   } catch (error) {
     dispatch({ type: GET_TODOS_ERROR, error })
+    console.error(error)
+  }
+}
+
+export const fetchTodo = (id: string) => async (dispatch: Dispatch<ActionType>): Promise<void> => {
+  dispatch({ type: GET_TODO })
+  try {
+    await sleep(500)
+    const response = await fetch(`/api/todos/${id}`, header)
+    const result: TodoDataIDType = await response.json()
+    dispatch({ type: GET_TODO_SUCCESS, payload: result, id })
+  } catch (error) {
+    dispatch({ type: GET_TODO_ERROR, error })
     console.error(error)
   }
 }

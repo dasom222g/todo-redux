@@ -5,9 +5,9 @@ import {
   GET_TODOS_ERROR,
   ADD_TODO_ERROR,
   ADD_TODO_SUCCESS,
-  // GET_TODO,
-  // GET_TODO_SUCCESS,
-  // GET_TODO_ERROR,
+  GET_TODO,
+  GET_TODO_SUCCESS,
+  GET_TODO_ERROR,
   DELETE_TODO_SUCCESS,
   DELETE_TODO_ERROR,
   UPDATE_TODO_SUCCESS,
@@ -40,6 +40,26 @@ const getData = (payload: TodoDataIDType[] | null): NormalType | null => {
   } else return dataInitial
 }
 
+const getItem = (payload: NormalType | null, item: TodoDataIDType, id: string): NormalType => {
+  if (payload) {
+    const { allIds, byId } = payload
+    const updateByid = produce(byId, (draft) => {
+      draft[id] = item
+    })
+    return {
+      allIds,
+      byId: updateByid,
+    }
+  } else {
+    return {
+      allIds: [],
+      byId: {
+        [id]: item,
+      },
+    }
+  }
+}
+
 const addTodo = (payload: NormalType, newItem: TodoDataIDType): NormalType => {
   const { allIds, byId } = payload
   const id = newItem.id.toString()
@@ -69,7 +89,6 @@ const removeTodo = (payload: NormalType, id: string): NormalType => {
     draft.allIds = allIds
     delete draft.byId[id]
   })
-  console.log('result', result)
   return result
 }
 
@@ -85,6 +104,17 @@ export const todos = (state: StateType = initialState, action: ActionType): Stat
       return produce(state, (draft) => {
         draft.isLoading = false
         draft.payload = getData(action.payload)
+        draft.error = null
+      })
+    case GET_TODO:
+      return produce(state, (draft) => {
+        draft.isLoading = true
+        draft.error = null
+      })
+    case GET_TODO_SUCCESS:
+      return produce(state, (draft) => {
+        draft.isLoading = false
+        draft.payload = getItem(state.payload, action.payload, action.id)
         draft.error = null
       })
     case ADD_TODO_SUCCESS:
@@ -106,6 +136,7 @@ export const todos = (state: StateType = initialState, action: ActionType): Stat
         draft.error = null
       })
     case GET_TODOS_ERROR:
+    case GET_TODO_ERROR:
     case ADD_TODO_ERROR:
     case UPDATE_TODO_ERROR:
     case DELETE_TODO_ERROR:

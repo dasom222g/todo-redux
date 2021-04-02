@@ -47,7 +47,7 @@ export type ActionType =
   | { type: typeof GET_TODOS_SUCCESS; payload: TodoDataIDType[] | null }
   | { type: typeof GET_TODOS_ERROR; error: Error }
   | { type: typeof GET_TODO }
-  | { type: typeof GET_TODO_SUCCESS; payload: TodoDataIDType }
+  | { type: typeof GET_TODO_SUCCESS; payload: TodoDataIDType; id: string }
   | { type: typeof GET_TODO_ERROR; error: Error }
 
 export type StateType = {

@@ -19,7 +19,6 @@ function TodoUpdateForm({ todo }: TodoUpdateFormProps): JSX.Element {
       reset()
       return
     }
-    // addTodo(form[NAME])
     reset()
   }
 

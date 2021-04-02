@@ -1,13 +1,18 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import { fetchTodo } from '../actions'
 import TodoUpdateForm from '../components/TodoUpdateForm'
-import { IRootState } from '../lib/type'
+import { IRootState, ThunkDispatchType } from '../lib/type'
 
 function TodoUpdate(): JSX.Element {
   const { isLoading, payload: data, error } = useSelector((state: IRootState) => state.todos)
-  // const dispatch = useDispatch<ThunkDispatchType>()
+  const dispatch: ThunkDispatchType = useDispatch()
   const todoId = useParams<{ itemId: string }>().itemId
+
+  useEffect(() => {
+    dispatch(fetchTodo(todoId))
+  }, [dispatch, todoId])
 
   if (isLoading) return <div>Loading...</div>
   if (error) return <div>Error...</div>
