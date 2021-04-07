@@ -1,25 +1,45 @@
-import React from 'react'
+import React, { useState } from 'react'
 import useInputs from '../hooks/useInputs'
 import { TodoDataIDType } from '../lib/type'
+import TodoDetailForm from './TodoDetailForm'
 
 type TodoUpdateFormProps = {
   todo: TodoDataIDType
+  updateTodo: (changeItem: TodoDataIDType) => void
 }
 
-function TodoUpdateForm({ todo }: TodoUpdateFormProps): JSX.Element {
-  const NAME = 'title'
+function TodoUpdateForm({ todo, updateTodo }: TodoUpdateFormProps): JSX.Element {
+  const { title: initialTitle, description: initialDescription } = todo
+
   const initial = {
-    [NAME]: todo.title,
+    title: initialTitle,
+    description: initialDescription || '',
   }
   const [form, onChange, reset] = useInputs(initial)
+  const [description, setDescription] = useState(initialDescription || '')
+  const { title } = form
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
-    if (/^\s*$/.test(form[NAME])) {
+    if (/^\s*$/.test(title)) {
       reset()
       return
     }
+    const changeItem: TodoDataIDType = {
+      ...todo,
+      title: title.trim(),
+      description: description.trim(),
+    }
+    updateTodo(changeItem)
     reset()
+  }
+
+  const updateNote = (text: string): void => {
+    if (/^\s*$/.test(title)) {
+      reset()
+      return
+    }
+    setDescription(text)
   }
 
   return (
@@ -30,16 +50,17 @@ function TodoUpdateForm({ todo }: TodoUpdateFormProps): JSX.Element {
             <input
               type="text"
               className="form__element"
-              name={NAME}
-              value={form[NAME]}
+              name="title"
+              value={title}
               onChange={onChange}
             />
           </div>
+          <TodoDetailForm todo={todo} updateNote={updateNote} />
           <div className="button-area">
             <button type="button" className="button-base button-base--cancel">
               Cancel
             </button>
-            <button type="button" className="button-base">
+            <button type="submit" className="button-base">
               Confirm
             </button>
           </div>
