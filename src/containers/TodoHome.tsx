@@ -24,7 +24,9 @@ export default function TodoHome(): JSX.Element {
   }
 
   useEffect(() => {
+    if (todos && todos.allIds.length) return
     dispatch(fetchTodos())
+    /* eslint-disable-next-line */
   }, [dispatch])
 
   if (isLoading) return <div>Loading..</div>

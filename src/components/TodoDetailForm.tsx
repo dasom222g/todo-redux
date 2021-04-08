@@ -10,13 +10,14 @@ type TodoDetailFormProps = {
 function TodoDetailForm({ todo, updateNote }: TodoDetailFormProps): JSX.Element {
   const NAME = 'description'
   const initial = {
-    [NAME]: todo.description || '',
+    [NAME]: todo.description ? todo.description : '',
   }
   const [form, onChange] = useInputs(initial)
 
   useEffect(() => {
     updateNote(form[NAME])
-  }, [form, updateNote])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form])
 
   return (
     <div className="todo__detail-desc">

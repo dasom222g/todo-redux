@@ -36,25 +36,23 @@ export const handlers = [
   rest.put('/api/todos/:itemId', (req, res, ctx) => {
     const itemId = Number(req.params.itemId)
     const content = typeof req.body === 'string' ? JSON.parse(req.body) : req.body
-    const { id, title, descritption, isComplete } = content
+    const { id, title, description, isComplete } = content
     const store = localStorage.getItem(KEY)
     if (store) {
       const parseStore = JSON.parse(store)
-      console.log('put~~')
       const result = parseStore.map((item: TodoDataIDType) => {
         if (item.id === itemId) {
           return {
             ...item,
             id,
             title,
-            descritption,
+            description,
             isComplete,
           }
         } else {
           return { ...item }
         }
       })
-      console.log('result', result)
       localStorage.setItem(KEY, JSON.stringify(result))
 
       return res(

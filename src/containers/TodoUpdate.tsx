@@ -10,7 +10,6 @@ function TodoUpdate(): JSX.Element {
   const dispatch: ThunkDispatchType = useDispatch()
   const todoId = useParams<{ itemId: string }>().itemId
   const updateTodo = (changeItem: TodoDataIDType): void => {
-    console.log('changeItem', changeItem)
     dispatch(putTodo(todoId, changeItem))
   }
 

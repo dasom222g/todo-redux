@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import useRouter from 'use-react-router'
 import useInputs from '../hooks/useInputs'
 import { TodoDataIDType } from '../lib/type'
 import TodoDetailForm from './TodoDetailForm'
@@ -9,14 +10,16 @@ type TodoUpdateFormProps = {
 }
 
 function TodoUpdateForm({ todo, updateTodo }: TodoUpdateFormProps): JSX.Element {
+  const { history } = useRouter()
+
   const { title: initialTitle, description: initialDescription } = todo
 
   const initial = {
     title: initialTitle,
-    description: initialDescription || '',
+    description: initialDescription,
   }
   const [form, onChange, reset] = useInputs(initial)
-  const [description, setDescription] = useState(initialDescription || '')
+  const [description, setDescription] = useState(initialDescription)
   const { title } = form
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
@@ -28,18 +31,31 @@ function TodoUpdateForm({ todo, updateTodo }: TodoUpdateFormProps): JSX.Element 
     const changeItem: TodoDataIDType = {
       ...todo,
       title: title.trim(),
-      description: description.trim(),
+      description: description ? description.trim() : '',
     }
     updateTodo(changeItem)
     reset()
+    goHome()
   }
 
   const updateNote = (text: string): void => {
-    if (/^\s*$/.test(title)) {
-      reset()
-      return
-    }
+    // if (/^\s*$/.test(title)) {
+    //   reset()
+    //   return
+    // }
     setDescription(text)
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    onChange(e)
+  }
+
+  const handleKeypress = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+    e.preventDefault()
+  }
+
+  const goHome = (): void => {
+    history.push('/')
   }
 
   return (
@@ -52,12 +68,13 @@ function TodoUpdateForm({ todo, updateTodo }: TodoUpdateFormProps): JSX.Element 
               className="form__element"
               name="title"
               value={title}
-              onChange={onChange}
+              onChange={handleChange}
+              onKeyPress={handleKeypress}
             />
           </div>
           <TodoDetailForm todo={todo} updateNote={updateNote} />
           <div className="button-area">
-            <button type="button" className="button-base button-base--cancel">
+            <button type="button" className="button-base button-base--cancel" onClick={goHome}>
               Cancel
             </button>
             <button type="submit" className="button-base">

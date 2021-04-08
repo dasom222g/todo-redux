@@ -18,7 +18,6 @@ function TodoItem({ todo, removeTodo, completeTodo }: TodoItemProps): JSX.Elemen
       ...todo,
       isComplete: !todo.isComplete,
     }
-    console.log('changeItem', changeItem)
     completeTodo(id, changeItem)
   }
 
