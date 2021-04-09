@@ -51,8 +51,8 @@ export const fetchTodos = () => async (dispatch: Dispatch<ActionType>): Promise<
 
 export const fetchTodo = (id: string) => async (dispatch: Dispatch<ActionType>): Promise<void> => {
   dispatch({ type: GET_TODO })
+  await sleep(500)
   try {
-    await sleep(500)
     const response = await fetch(`/api/todos/${id}`, header)
     const result: TodoDataIDType = await response.json()
     dispatch({ type: GET_TODO_SUCCESS, payload: result, id })

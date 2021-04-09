@@ -34,12 +34,12 @@ export default function TodoHome(): JSX.Element {
   if (!todos) return <></>
 
   return (
-    <div className="todo">
+    <>
       <header>
         <h2 className="todo__title">What’s the Plan for Today?</h2>
       </header>
       <TodoForm addTodo={addTodo} />
       <TodoList todos={todos} removeTodo={removeTodo} completeTodo={completeTodo} />
-    </div>
+    </>
   )
 }

@@ -12,11 +12,13 @@ function App(): JSX.Element {
       {/* <CounterContainer /> */}
       {/* <Route path="/" component={PostContainer} exact />
       <Route path="/:id" component={PostDetailContainer} /> */}
-      <Switch>
-        <Route path="/" render={() => <TodoHome />} exact />
-        <Route path="/update/:itemId" render={() => <TodoUpdate />} />
-        <Route path="/">Not found</Route>
-      </Switch>
+      <div className="todo">
+        <Switch>
+          <Route path="/" render={() => <TodoHome />} exact />
+          <Route path="/update/:itemId" render={() => <TodoUpdate />} />
+          <Route path="/">Not found</Route>
+        </Switch>
+      </div>
     </div>
   )
 }
