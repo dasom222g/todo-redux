@@ -24,10 +24,11 @@ function TodoUpdateForm({ todo, updateTodo }: TodoUpdateFormProps): JSX.Element 
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
-    if (/^\s*$/.test(title)) {
-      reset()
-      return
-    }
+    // if (/^\s*$/.test(title)) {
+    //   console.log('유효하지 않습니다')
+    //   reset()
+    //   return
+    // }
     const changeItem: TodoDataIDType = {
       ...todo,
       title: title.trim(),
@@ -39,19 +40,11 @@ function TodoUpdateForm({ todo, updateTodo }: TodoUpdateFormProps): JSX.Element 
   }
 
   const updateNote = (text: string): void => {
-    // if (/^\s*$/.test(title)) {
-    //   reset()
-    //   return
-    // }
     setDescription(text)
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    onChange(e)
-  }
-
   const handleKeypress = (e: React.KeyboardEvent<HTMLInputElement>): void => {
-    e.preventDefault()
+    if (e.key === 'Enter') e.preventDefault()
   }
 
   const goHome = (): void => {
@@ -68,7 +61,7 @@ function TodoUpdateForm({ todo, updateTodo }: TodoUpdateFormProps): JSX.Element 
               className="form__element"
               name="title"
               value={title}
-              onChange={handleChange}
+              onChange={onChange}
               onKeyPress={handleKeypress}
             />
           </div>

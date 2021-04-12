@@ -6,19 +6,19 @@ type TodoFormProps = {
 }
 
 function TodoForm({ addTodo }: TodoFormProps): JSX.Element {
-  const NAME = 'title'
   const initial = {
-    [NAME]: '',
+    title: '',
   }
   const [form, onChange, reset] = useInputs(initial)
+  const { title } = form
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
-    if (/^\s*$/.test(form[NAME])) {
+    if (/^\s*$/.test(title)) {
       reset()
       return
     }
-    addTodo(form[NAME])
+    addTodo(title)
     reset()
   }
 
@@ -30,8 +30,8 @@ function TodoForm({ addTodo }: TodoFormProps): JSX.Element {
             <input
               type="text"
               className="form__element"
-              name={NAME}
-              value={form[NAME]}
+              name="title"
+              value={title}
               onChange={onChange}
             />
             <button type="submit" className="form__button">
